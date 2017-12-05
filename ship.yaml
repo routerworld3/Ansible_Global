@@ -1,0 +1,13 @@
+---
+- hosts: all
+  gather_facts: false
+    
+  tasks:
+  - name: show ip int brief
+    raw: show ip interface brief
+    register: show_ip
+
+  - name: Print the Output
+    debug: var=show_ip.stdout_lines
+
+  

@@ -1,0 +1,12 @@
+---
+- hosts: all
+  gather_facts: false
+    
+  tasks:
+  - name: get cell id info
+    raw: shcell
+    register: show_cell
+  - name: Print the Output
+    debug: var=show_cell.stdout_lines
+
+  
