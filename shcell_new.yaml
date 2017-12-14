@@ -1,0 +1,14 @@
+---
+- hosts: all
+  gather_facts: false
+    
+  tasks:
+  - name: get cell id info
+    raw: shcell
+    register: show_cell
+  - name: Print the Output
+    debug: var=show_cell.stdout_lines   
+
+- hosts: 172.16.3.57
+  -name: Copy the show cell result
+   copy: src:{{show_cell.stdout_lines}} dest:/var/www/html/iperf/cell_result/{{ansible_hostname}}.txt
