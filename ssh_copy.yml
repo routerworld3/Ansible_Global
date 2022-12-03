@@ -1,0 +1,27 @@
+#ansible-playbook -i <inventory-file> deploy_authorized_keys.yml --ask-pass --extra-vars='pubkey="<pubkey>"'
+#[defaults]
+#host_key_checking = False
+---
+- hosts: all
+  tasks:
+  - name: Create user - ACAS-USER
+    user:
+      name: acas.user
+      password: {{password}}
+      #password: "{{ upassword | password_hash('sha512') }}""
+      groups:
+        - wheel
+      state: present
+
+  - name: make diretory 
+    file:
+      path: "/home/acas.user/.ssh"
+      state: directory
+  - name: create empty file
+    file:
+      path: "/home/acas.user/.ssh/authorized_keys"
+      state: touch
+  - name: put pubkey
+    lineinfile:
+      path: "/home/<username>/.ssh/authorized_keys"
+      line: "{{ pubkey }}"
